@@ -325,6 +325,10 @@ class _MyHomePageState extends State&lt;MyHomePage&gt; {
 <p>完了したTODOを未完了に戻すであるとか、完了したTODOを削除するとかは考えないでおきます。後ほど自分で機能追加してみてください。</p>
 <p>なお、出来上がりのサンプルは下記のリンクのとおりです。</p>
 <h3 is-upgraded><a href="https://kikuchy.github.io/flutter_nullsafe_todo_sample/sample/index.html" target="_blank">TODOアプリサンプル</a></h3>
+<h2 is-upgraded>Sound Null Safety対応する</h2>
+<p>以降のDartのソースコードはDart 2.12のNull安全に対応した際に使用可能な文法で書かれています。サンプルの通りに記述するには、Null安全を有効にする必要があります。<code>pubspec.yaml</code>の<code>environment</code> -&gt; <code>sdk</code>の下限を2.12.0に設定します。</p>
+<pre><code>environment:
+ sdk: &#34;&gt;=2.12.0 &lt;3.0.0&#34;</code></pre>
 <h2 is-upgraded>TODOを表現するデータ構造を作る</h2>
 <p>lib/todo.dartを作成し、TODOを表現するクラスを作成します。</p>
 <pre><code>class Todo {
@@ -383,6 +387,8 @@ class _TodoListPageState extends State&lt;TodoListPage&gt; {
 }</code></pre>
 <aside class="special"><p><a href="https://api.flutter.dev/flutter/material/CheckboxListTile-class.html" target="_blank"><code>CheckboxListTile</code></a>を使用しても良いのですが、後ほどonLongPressコールバックを使用したいのでListTileにしています（CheckboxListTileにはonLongPressが無い）。</p>
 </aside>
+<aside class="special"><p>何度か<a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html" target="_blank"><code>BuildContext</code></a>というクラスが登場しています。<code>BuildContext</code>はWidgetツリーの上位にどんなWidgetがあるのか、ということを調べる手がかりになるものです。画面遷移や色調を管理するWidgetは通常、ほぼ最上位に位置する（<code>MaterialApp</code>の中に入っている）ため、<code>BuildContext</code>を引数に要求されることが多いです。後述する状態管理手法でも、Widgetツリー上位からインスタンスを注入するという手法をよくとるため、頻繁に使用することになります。</p>
+</aside>
 <p>起動時にこれを表示できるようにします。</p>
 <p><code>lib/main.dart</code>の<code>MyHomePage</code>を削除し、代わりに<code>TodoListPage</code>を表示するように変更します。</p>
 <pre><code>void main() {
@@ -424,9 +430,7 @@ class EditDialog extends StatefulWidget {
 class _EditDialogState extends State&lt;EditDialog&gt; {
  @override
  Widget build(BuildContext context) {
-   return TextField(
-     decoration: InputDecoration(hintText: &#34;TODO&#34;),
-   );
+   return Container();
  }
 }</code></pre>
 <p>テキストの入力を受け付けるWidgetは<a href="https://api.flutter.dev/flutter/material/TextField-class.html" target="_blank"><code>TextField</code></a>です。まずはこれをreturnすることにします。<code>decoration</code>に<a href="https://api.flutter.dev/flutter/material/InputDecoration-class.html" target="_blank"><code>InputDecoration</code></a>を指定することで、見た目のカスタマイズができます。</p>
@@ -523,6 +527,19 @@ class _EditDialogState extends State&lt;EditDialog&gt; {
 <aside class="special"><p><code>showDialog</code>で開いたモーダルダイアログを閉じるに<code>Navigator</code>を使用するのが奇妙に思えるかもしれません。</p>
 <p>実は<code>showDialog</code>は<code>Navigator</code>を使って画面遷移を行っているので、前の画面に戻る<code>Navigator.pop</code>を使うことでダイアログを閉じることができます。</p>
 </aside>
+<p><code>TodoListPage</code>でも、<code>EditDialog</code>の結果を受け取って状態として反映する処理を追加します。「保存」ボタン以外の手段でダイアログが閉じられた場合はnullが返るので、nullでなかったときのみ反映するようにします。</p>
+<pre><code>floatingActionButton: FloatingActionButton(
+ child: Icon(Icons.add),
+ onPressed: () async {
+   final todo = await EditDialog.show(context);
+   if (todo != null) {
+     _setState(() {
+        _todo.add(todo);
+      });
+   }
+ },
+),
+</code></pre>
 <p class="image-container"><img style="width: 601.70px" src="img/246f1a63b20d9575.png"><img style="width: 601.70px" src="img/601dd4509ed2a77e.png"></p>
 <p>このままだと固定された内容のTODOしか作成できないので、ユーザーの入力値を使えるようにします。<code>_EditDialogState</code>に<code>TextEditingController</code>を保持させ、<code>TextField</code>に渡したり、<code>ElevatedButton</code>が押されたときに値を取り出したりするのに使用できるようにします。また、ライフサイクルに合わせて破棄したりします。</p>
 <pre><code>class _EditDialogState extends State&lt;EditDialog&gt; {
@@ -686,7 +703,27 @@ class _EditDialogState extends State&lt;EditDialog&gt; {
  }
 }
 </code></pre>
-<p><code>TodoRepository</code>からデータを読み出すようにします。</p>
+<p><code>TodoListPage</code>から<code>TodoRepository</code>を使用できるようにします。</p>
+<pre><code>class TodoListPage extends StatefulWidget {
+ final TodoRepository repository;
+ TodoListPage(this.repository);
+ @override
+ _TodoListPageState createState() =&gt; _TodoListPageState();
+}</code></pre>
+<p>MyAppで、コンストラクタにTodoRepositoryにインスタンスを渡すようにします。</p>
+<pre><code>class MyApp extends StatelessWidget {
+ @override
+ Widget build(BuildContext context) {
+   return MaterialApp(
+     title: &#39;TODOアプリ&#39;,
+     theme: ThemeData(
+       primarySwatch: Colors.blue,
+     ),
+     home: TodoListPage(TodoRepository()),
+   );
+ }
+}</code></pre>
+<p><code>_TodoListPageState</code>の初期化時に<code>TodoRepository</code>からデータを読み出すようにします。</p>
 <pre><code>class _TodoListPageState extends State&lt;TodoListPage&gt; {
  List&lt;Todo&gt; _todos = [];
 
@@ -778,7 +815,9 @@ class _EditDialogState extends State&lt;EditDialog&gt; {
 </td><td colspan="1" rowspan="1"><p>デメリット</p>
 </td></tr>
 <tr><td colspan="1" rowspan="1"><p>StatefulWidgetパターン</p>
-</td><td colspan="1" rowspan="1"><p>Flutter標準のStatefulWidetを使用した状態管理手法</p>
+</td><td colspan="1" rowspan="1"><ul>
+<li>Flutter標準のStatefulWidetを使用した状態管理手法</li>
+</ul>
 </td><td colspan="1" rowspan="1"><ul>
 <li>単純かつ実装が容易</li>
 </ul>
@@ -876,7 +915,7 @@ class _EditDialogState extends State&lt;EditDialog&gt; {
 </td></tr>
 </table>
 <h2 is-upgraded>よく使われる手法</h2>
-<p>Flutter自体が比較的新しいフレームワークであること、宣言的UIフレームワークはビジネスロジックと表示のコードの分離が比較的簡単であることから、あまり手法に命名して開発者間で認識の統一を図ることが積極的には行われていないようです。</p>
+<p>Flutter自体が比較的新しいフレームワークであること、宣言的UIフレームワークはビジネスロジックと表示のコードの分離が比較的簡単であることから、あまり手法を命名して開発者間で認識の統一を図ることが積極的には行われていないようです。</p>
 <p>2021年初旬現在、一般的に使われているように思われるのは、<code>provider</code> + <code>state_notifier</code> + <code>freezed</code>もしくは<code>riverpod</code> + <code>state_notifier</code> + <code>freezed</code>のどちらかを使用した、ScopedModelパターン（の変形）です。</p>
 <p>ただ、<code>riverpod</code>はまだメジャーリリースされていないため、実際の開発現場で採用する際はAPIの破壊的変更に注意する必要があります。</p>
 <h2 is-upgraded>TODOアプリをproviderで再構築してみる</h2>
