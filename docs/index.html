@@ -1,0 +1,1194 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>FlutterでTODOアプリ</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="flutter-2-todo"
+                  title="FlutterでTODOアプリ"
+                  environment="web"
+                  feedback-link="https://github.com/budougumi0617/claat-sample/issues">
+    
+      <google-codelab-step label="Flutterとは" duration="5">
+        <h2 is-upgraded>概要</h2>
+<p>バージョン2.0現在はモバイルアプリケーションを主なターゲットとした、マルチプラットフォームUIフレームワークです。</p>
+<p>以下のような特徴があります。</p>
+<ul>
+<li>マルチプラットフォーム対応</li>
+<li>一つのソースコードでiOS / Android / Webアプリケーションを作成することができる</li>
+<li>フルスタックである</li>
+<li>Flutterフレームワークが画面描画を（プラットフォームのUIを使用せず）自前で行っている</li>
+<li>プラットフォームのバージョンなどに左右されずに描画を行うことができる</li>
+<li>プラットフォームのUIを表示したくても通常の方法ではできない（PlatformViewという仕組みで解決可能）</li>
+<li>豊富な標準UIコンポーネントが用意されている</li>
+<li>Material Designに即したUIデザインシステム</li>
+<li>Dart言語を使用したフレームワークである</li>
+<li>デバッグ時はDart VMを使用したHot reload（アプリケーションを起動したままソースコードの再評価をする）などの機能を使った、高速な開発イテレーションを遂行可能である</li>
+<li>リリース時にはTree shakingによる不要コード削除とマシン語へのコンパイルで軽量かつ高速なアプリケーションを生成</li>
+</ul>
+<p>主にGoogleが開発し、アメリカや中国を中心に導入が進んでいます。</p>
+<p>近年は日本の大手IT企業でも採用事例があるなど、使用される機会が増えています。</p>
+<p><a href="https://developers.googleblog.com/2021/03/announcing-flutter-2.html" target="_blank">2021年3月4日にFlutterのバージョン2がリリースされました。</a></p>
+<p>このバージョンからWebアプリを生成する &#34;Flutter for Web&#34; が安定版に取り込まれ、iOS / Androidアプリケーションに加え、Webアプリケーションを生成できるようになりました。</p>
+<p>また、現在はWindows / macOS / LinuxのデスクトップOS用のアプリケーションを生成する &#34;Flutter Desktop&#34; も開発が進んでおり、Ubuntu（Linuxディストリビューションの一つ）をメンテナンスしているCanonical社がUbuntu用アプリケーションの作成にFlutterを使用することを表明しています。</p>
+<p><a href="https://twitter.com/ubuntu/status/1367063203600031746" target="_blank">https://twitter.com/ubuntu/status/1367063203600031746</a></p>
+<h2 is-upgraded>Dart 言語</h2>
+<p>Flutterアプリケーションを記述するにはDart言語を使用します。</p>
+<p>2021年3月現在、Dart代替言語は存在しないため、現在のところは他に選択肢がありません。</p>
+<p>Dartは以下のような特徴を持ったプログラミング言語です。</p>
+<ul>
+<li>JavaやC#のようなクラス指向のプログラミング言語</li>
+<li>JavaScriptやRubyのような純粋オブジェクト指向の言語</li>
+<li>JavaやJavaScriptとよく似た文法と標準API</li>
+<li>静的型システム</li>
+<li>Dart 2.12からは型システムによるnull安全機能も搭載</li>
+<li>Dart VM上で逐次実行することも、マシン語にコンパイルすることも可能</li>
+<li>JavaScriptにトランスパイル可能</li>
+</ul>
+<pre><code>void main() {
+  final String a = &#34;hello world&#34;;
+  print(a);
+}</code></pre>
+<h2 is-upgraded>Flutter開発ができると何が良いのか</h2>
+<p>以下の点でエンジニアとしてのキャリアを積む上でプラスになります。</p>
+<ul>
+<li>アプリのプロトタイプを、高速に、かつ完成度高く作成できるエンジニアとして重宝される</li>
+<li>あるアイデアが有効であるかどうかを、大きなリソースを投下する前に知ることができる</li>
+<li>アプリケーション開発リソースを削減することで人件費や時間の節約を可能にしたエンジニアとして重宝される</li>
+<li>最新のテクノロジに明るいエンジニアとして一目置かれる</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Flutterアプリケーション開発事始め" duration="5">
+        <p>今回は詳しく説明しません。事前にSDKのインストールからアプリが実行可能であることまでは確認済みであることを期待します。</p>
+<h2 is-upgraded>SDKのインストール</h2>
+<p>OSごとに異なります。</p>
+<p>基本的には以下のことをするのみです。</p>
+<ol type="1" start="1">
+<li>公式サイトからSDKのzipアーカイブをダウンロード</li>
+<li>解凍したアーカイブを適当な場所に配置</li>
+<li>Pathを通す</li>
+<li>動作確認</li>
+</ol>
+<h3 is-upgraded>macOSの場合</h3>
+<p><a href="https://flutter.dev/docs/get-started/install/macos" target="_blank">https://flutter.dev/docs/get-started/install/macos</a></p>
+<p>上記ページから最新のSDKのアーカイブをダウンロードし、ダブルクリックするなどしてアーカイブを展開します。</p>
+<p class="image-container"><img style="width: 508.00px" src="img/12b73a6cef49bbdc.png"></p>
+<p>展開されてできたフォルダを適当な場所に配置します。特にこだわりがなければ <code>~/sdk/flutter</code> などに配置すると良いでしょう。</p>
+<p>配置したら、CLIからコマンドを呼び出せるようにPathを通します。普段使いのシェルの設定ファイル末尾にPATHの設定を記述します。以下はbash / zshの例です。他のシェルを使用している場合は適切に設定するようにしてください。</p>
+<pre><code>PATH=$PATH:$HOME/sdk/flutter/bin</code></pre>
+<h3 is-upgraded>Windowsの場合</h3>
+<p>事前に以下のプログラムがインストールされ、使用可能になっていることを確認してください。</p>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/powershell/scripting/install/installing-windows-powershell" target="_blank">Windows PowerShell 5.0</a> 以降の最新版</li>
+<li>Windows 10以降であればプリインストールされています</li>
+<li><a href="https://git-scm.com/download/win" target="_blank">Git for Windows 2.x</a> 系</li>
+<li><strong>Use Git from the Windows Command Prompt</strong> のオプションを選択してインストールしてください</li>
+<li>コマンドプロンプトまたはPowerShellから <code>git</code> コマンドが使用可能であれば大丈夫です</li>
+</ul>
+<p><a href="https://flutter.dev/docs/get-started/install/windows" target="_blank">https://flutter.dev/docs/get-started/install/windows</a></p>
+<p>上記ページから最新のSDKのアーカイブをダウンロードし、圧縮フォルダユーティリティを使用するなどしてアーカイブを展開します。</p>
+<p>展開されてできたフォルダを適当な場所に配置します。特にこだわりがなければ <code>C:\sdk\flutter</code> などに配置すると良いでしょう。</p>
+<p>配置したら、CLIからコマンドを呼び出せるようにPATHを通します。環境変数の設定ダイアログからPATHを設定してください。Windowsのバージョンによって設定の方法が異なるので、自身が使用しているWindowsに合わせて設定を変更してください。</p>
+<p>参考リンク：<a href="https://www.k-cube.co.jp/wakaba/server/environ.html" target="_blank">環境変数の設定方法</a></p>
+<p>PATHには <code>(path to sdk)\flutter\bin</code> を設定します。上記の例どおりであれば <code>C:\sdk\flutter\bin</code> になります。</p>
+<h3 is-upgraded>動作確認</h3>
+<p>以下以降すべてコマンドラインでの説明になります。ターミナルやPowerShellから実行してください。</p>
+<p>flutter doctor コマンドを実行すると、Flutterを動作させるのに必要な準備が整っているか確認することができます。以下のように <code>No issues found!</code> と表示されれば何も問題ありません。</p>
+<pre>$ flutter doctor
+Doctor summary (to see all details, run flutter doctor -v):
+[✓] Flutter (Channel stable, 2.0.3, on macOS 11.2.3 20D91 darwin-x64, locale ja-JP)
+[✓] Android toolchain - develop for Android devices (Android SDK version 29.0.2)
+[✓] Xcode - develop for iOS and macOS
+[✓] Chrome - develop for the web
+[✓] Android Studio (version 4.1)
+[✓] IntelliJ IDEA Community Edition (version 2020.3.3)
+[✓] VS Code (version 1.54.2)
+[✓] Connected device (2 available)
+
+• No issues found!</pre>
+<p>問題があれば以下のように ! マークが表示され、解決方法が提案されます。提案された方法を一通り試してください。</p>
+<pre>$ flutter doctor
+Doctor summary (to see all details, run flutter doctor -v):
+[✓] Flutter (Channel stable, 2.0.3, on macOS 11.2.3 20D91 darwin-x64, locale ja-JP)
+[!] Android toolchain - develop for Android devices (Android SDK version 29.0.2)
+    ! Some Android licenses not accepted.  To resolve this, run: flutter doctor --android-licenses
+[!] Xcode - develop for iOS and macOS
+    ✗ CocoaPods installed but not working.
+        You appear to have CocoaPods installed but it is not working.
+        This can happen if the version of Ruby that CocoaPods was installed with is different from the one being used to invoke it.
+        This can usually be fixed by re-installing CocoaPods.
+      To re-install see https://guides.cocoapods.org/using/getting-started.html#installation for instructions.
+[✓] Chrome - develop for the web
+[✓] Android Studio (version 4.1)
+[✓] IntelliJ IDEA Community Edition (version 2020.3.3)
+[✓] VS Code (version 1.54.2)
+[✓] Connected device (2 available)
+
+! Doctor found issues in 2 categories.
+</pre>
+<p>また、Flutterのプロジェクトを作成して適当なターゲットのアプリケーションがビルド可能か確認してください。</p>
+<pre>$ flutter create launch_test
+Creating project launch_test...
+（中略）
+All done!
+In order to run your application, type:
+
+  $ cd launch_test
+  $ flutter run
+
+To enable null safety, type:
+
+  $ cd launch_test
+  $ dart migrate --apply-changes
+
+Your application code is in launch_test/lib/main.dart.
+
+$ cd launch_test
+$ flutter run</pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Flutterアプリプロジェクトの基本構成" duration="10">
+        <p>本章では最初に生成されるプロジェクトをもとに、Flutterアプリの基本的な構成を解説します。</p>
+<p class="image-container"><img style="width: 438.00px" src="img/d6f19268222cbfc.png"></p>
+<h2 is-upgraded>ソースコード（libディレクトリ）</h2>
+<p>Flutterに限らず、Dartのプロジェクトではソースコードを<code>lib</code> (プロジェクトの中核をなすコード群を保管)ないし<code>bin</code> (コマンドラインでの実行可能ファイルを生成するプロジェクトの場合、エントリーポイントを保管)に格納します。Flutterのプロジェクトでは、<code>lib/main.dart</code> がエントリーポイント（プログラムが実行される起点。main関数があるファイル）です。なお、ファイル名は自由に変更できます。</p>
+<h2 is-upgraded>プロジェクトの構成データ（pubspec.yaml）</h2>
+<p><code>pubspec.yaml</code> がプロジェクトのメタデータを司ります。pubspec.yaml自体はDartプロジェクトで一般的に使われるもので、Flutterに特有のものではありません。</p>
+<p>NPMプロジェクトのpackage.jsonや、iOSプロジェクトの.xcodeprojファイル、Androidプロジェクトのbuild.gradle(.kts)などにあたるものです。</p>
+<p><code>pubspec.lock</code>は <code>$ flutter pub get</code> コマンドで依存ライブラリを解決した結果が記録されるものです。NPMプロジェクトのpackage.lockにあたるものです。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>項目名</p>
+</td><td colspan="1" rowspan="1"><p>詳細</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>name</code></p>
+</td><td colspan="1" rowspan="1"><p>プロジェクト名<br>Flutterプロジェクトの場合は特にアプリに反映されない</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>description</code></p>
+</td><td colspan="1" rowspan="1"><p>アプリの説明<br>Flutterプロジェクトの場合は特にアプリに反映されない</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>publich_to</code></p>
+</td><td colspan="1" rowspan="1"><p>Dartパッケージのリポジトリ pub.dev に公開するかどうかの設定</p>
+<p>Flutterプロジェクトは基本的に公開しないため none にしておく</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>version</code></p>
+</td><td colspan="1" rowspan="1"><p>バージョン名+バージョン番号</p>
+<p>+以前はアプリのバージョン名として使用される<br>+以後はAndroidアプリのビルド番号として使用される</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>dependencies</code></p>
+</td><td colspan="1" rowspan="1"><p>依存しているパッケージやプラグイン</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>dev_dependencies</code></p>
+</td><td colspan="1" rowspan="1"><p>dependenciesと同じだが、他のプロジェクトから依存されたときには使用しないもの</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>flutter</code></p>
+</td><td colspan="1" rowspan="1"><p>Flutterプロジェクト特有の設定<br>アプリに含めるアセットファイルやフォントの指定が可能</p>
+</td></tr>
+</table>
+<h2 is-upgraded>ビルド対象（android, ios, web, macos, windows, linux）</h2>
+<p>各ビルド対象のプロジェクトテンプレートなどが格納されています。</p>
+<p>Flutter 2.0時点ではandroid, ios, webの3つが生成されます。macos, windows, linuxは各プラットフォームの機能を有効にしないと生成されません。</p>
+<p>アプリのアイコンなどの設定は、このディレクトリ内のアプリプロジェクトを変更することで行います。中身は単純なAndroid / iOSプロジェクトだったり、ただのindex.htmlやfaviconが置かれたディレクトリなので、詳しくは各ターゲットの設定方法を調べてください。</p>
+<h2 is-upgraded>自動生成されるファイル（build, .metadataなど）</h2>
+<p>コマンドによって削除されたり更新されたりするファイルなので、基本的に編集することはありません。</p>
+<p>生成されるAndroid / iOSアプリケーションが期待通りではないときに覗いてみるとよいかもしれません。</p>
+<h2 is-upgraded>デフォルト生成されるソースコード</h2>
+<p>ボタンを押すと数字がカウントアップされるアプリケーションが生成されています。そのソースコードをベースにFlutterアプリケーションのソースコードの構造を説明します。</p>
+<p>Flutterにおいては、「すべてがWidget」です。アプリケーションもレイアウトもアニメーションもWidgetで表現します。</p>
+<pre><code>void main() {
+  // runAppは引数のWidgetを根としたFlutterアプリケーションを起動します
+  runApp(MyApp());
+}
+
+// Widget自体が状態を持たない場合はStatelessWidgetを継承したWidgetクラスを作成する
+class MyApp extends StatelessWidget {
+  // buildメソッドで、このWidgetが表現する子Widgetを返す
+  @override
+  Widget build(BuildContext context) {
+    // MaterialAppはMaterial Designに基づいた色調やタイポグラフィ設定、画面遷移機能、文字列表示における方向設定（ltrなど）などをまとめて提供する、標準提供されているユーティリティ。
+    // これがWidgetツリーの上位に存在しないと使用できない機能がたくさんある
+    return MaterialApp(
+      title: &#39;Flutter Demo&#39;,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      // 画面遷移の起点として表示されるものをhomeとして設定
+      home: MyHomePage(title: &#39;Flutter Demo Home Page&#39;),
+    );
+  }
+}
+</code></pre>
+<p>runAppに指定されたWidgetを根とした木構造になっている（Widgetのツリーが存在している）ことを理解しておくと、後の理解が深まります。</p>
+<p class="image-container"><img style="width: 392.03px" src="img/9a591b83dc05c160.png"></p>
+<p>Widgetは状態を持つことができ、またその状態によって表示を変えることもできます。</p>
+<pre><code>// 状態を持つWidgetはStatefulWidgetとStateの2つのクラスで構成します
+class MyHomePage extends StatefulWidget {
+ // Widgetのプロパティはコンストラクタ引数で渡すのが基本です
+ MyHomePage({Key key, this.title}) : super(key: key);
+ final String title;
+
+ @override
+ _MyHomePageState createState() =&gt; _MyHomePageState();
+}
+
+class _MyHomePageState extends State&lt;MyHomePage&gt; {
+ // Stateの状態はフィールドで保持することが多いです。
+ int _counter = 0;
+
+ void _incrementCounter() {
+   // setStateがbuildメソッドを再実行します（正確には再実行の予約をする）。
+   // 状態の更新はsetState引数の匿名関数内で行うのが一般的です
+   setState(() {
+     _counter++;
+   });
+ }
+
+ @override
+ Widget build(BuildContext context) {
+   // タイトルバーや背景色などを表示する枠組みを提供するWidgetがScaffold。
+   // 「画面」に相当する役割をするWidgetでは使用することが多い
+   return Scaffold(
+     appBar: AppBar(
+       // State.widgetで関連するStatefulWidgetのインスタンスを参照できます
+       title: Text(widget.title),
+     ),
+     body: Center(
+       child: Column(
+         mainAxisAlignment: MainAxisAlignment.center,
+         children: &lt;Widget&gt;[
+           Text(
+             &#39;You have pushed the button this many times:&#39;,
+           ),
+           // 状態を参照したコードを書くことが可能です。
+           // setStateがbuildメソッドを再実行することで描画が更新されます
+           Text(
+             &#39;$_counter&#39;,
+             style: Theme.of(context).textTheme.headline4,
+           ),
+         ],
+       ),
+     ),
+     floatingActionButton: FloatingActionButton(
+       onPressed: _incrementCounter,
+       tooltip: &#39;Increment&#39;,
+       child: Icon(Icons.add),
+     ),
+   );
+ }
+}
+</code></pre>
+<p>StatefulWidget &amp; Stateを使用した方法の他にも状態管理の方法はあります。（後述）</p>
+<h2 is-upgraded>Widgetの種類</h2>
+<p>たくさんの種類があり、ここですべてを紹介するのは不可能です。公式サイトにカタログや索引があるので、そちらを見てみてください。</p>
+<h3 is-upgraded><a href="https://flutter.dev/docs/development/ui/widgets" target="_blank">Widget catalog - Flutter</a></h3>
+<h3 is-upgraded><a href="https://flutter.dev/docs/reference/widgets" target="_blank">Flutter widget index - Flutter</a></h3>
+<p>また、週替りでWidgetの特徴や使い方を紹介する動画がYoutubeにアップロードされています。音声は英語ですが、日本語字幕も出せるので、こちらも参照してください。</p>
+<h3 is-upgraded><a href="https://www.youtube.com/watch?v=b_sQ9bMltGU&list=PLjxrf2q8roU23XGwz3Km7sQZFTdB996iG" target="_blank">Flutter Widget of the Week</a></h3>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="TODOアプリを作る" duration="60">
+        <p>TODOアプリを作ってみることで、基本的なFlutterアプリケーションの作り方を掴んでみてください。</p>
+<h2 is-upgraded>要件</h2>
+<p>以下の要件を満たすアプリを目指します。</p>
+<ul>
+<li>新しいTODOを追加できる</li>
+<li>追加時はTODOは未完了</li>
+<li>TODOの内容を変更できる</li>
+<li>変更しても完了状態は変化しない</li>
+<li>TODOを未完了から完了に変更できる</li>
+<li>作成したTODOや、TODOの状態はアプリを終了しても保持される</li>
+</ul>
+<p>完了したTODOを未完了に戻すであるとか、完了したTODOを削除するとかは考えないでおきます。後ほど自分で機能追加してみてください。</p>
+<h2 is-upgraded>TODOを表現するデータ構造を作る</h2>
+<p>lib/todo.dartを作成し、TODOを表現するクラスを作成します。</p>
+<pre><code>class Todo {
+ final String title;
+ final bool done;
+
+ Todo({required this.title, this.done = false});
+}</code></pre>
+<h2 is-upgraded>TODOリストを作成する</h2>
+<p>まずはTODOを表示するリストを持った画面を作成しましょう。TODOは増えたり状態が変わったりするため、画面はStatefulWidgetとして作成します。</p>
+<p>lib/todo_list.dartを作成し、TodoListPageという名前でStatefulWidget継承クラスを作成します。TODOリストはListで保持します。</p>
+<pre><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;package:nullsafe_todo/todo.dart&#39;;
+
+class TodoListPage extends StatefulWidget {
+ @override
+ _TodoListPageState createState() =&gt; _TodoListPageState();
+}
+
+class _TodoListPageState extends State&lt;TodoListPage&gt; {
+ List&lt;Todo&gt; _todos = [];
+
+ @override
+ Widget build(BuildContext context) {
+   return Scaffold();
+ }
+}</code></pre>
+<p>リストを表示するためには<a href="https://api.flutter.dev/flutter/widgets/ListView-class.html" target="_blank"><code>ListView</code></a>を使用します。<code>ListView</code>にはコンストラクタがいくつかありますが、Listの内要素に合わせてWidgetを変更する場合は<a href="https://api.flutter.dev/flutter/widgets/ListView/ListView.builder.html" target="_blank"><code>ListView.builder</code></a>コンストラクタを使用するのが便利です。</p>
+<p>また<code>ListView</code>の中身には<a href="https://api.flutter.dev/flutter/material/ListTile-class.html" target="_blank"><code>ListTile</code></a>系のWidgetを使うとよくあるリストを作ることができます。TODOであれば完了/未完了を表現するチェックボックスがあるとよいので、今回は<code>trailing</code>に<a href="https://api.flutter.dev/flutter/material/Checkbox-class.html" target="_blank"><code>Checkbox</code></a>を配置します。</p>
+<pre><code>class _TodoListPageState extends State&lt;TodoListPage&gt; {
+ List&lt;Todo&gt; _todos = [];
+
+ @override
+ Widget build(BuildContext context) {
+   return Scaffold(
+     body: ListView.builder(
+       itemCount: _todos.length,
+       itemBuilder: (context, index) {
+         final todo = _todos[index];
+
+         return ListTile(
+           title: Text(todo.title),
+           trailing: Checkbox(
+             value: todo.done,
+             onChanged: (checked) {
+               setState(() {
+                 _todos[index] = Todo(title: todo.title, done: checked ?? false);
+               });
+             },
+           ),
+         );
+       },
+     ),
+   );
+ }
+}</code></pre>
+<aside class="special"><p><a href="https://api.flutter.dev/flutter/material/CheckboxListTile-class.html" target="_blank"><code>CheckboxListTile</code></a>を使用しても良いのですが、後ほどonLongPressコールバックを使用したいのでListTileにしています（CheckboxListTileにはonLongPressが無い）。</p>
+</aside>
+<p>起動時にこれを表示できるようにします。</p>
+<p><code>lib/main.dart</code>の<code>MyHomePage</code>を削除し、代わりに<code>TodoListPage</code>を表示するように変更します。</p>
+<pre><code>void main() {
+ runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+ @override
+ Widget build(BuildContext context) {
+   return MaterialApp(
+     title: &#39;TODOアプリ&#39;,
+     theme: ThemeData(
+       primarySwatch: Colors.blue,
+     ),
+     home: TodoListPage(),
+   );
+ }
+}</code></pre>
+<p>ただ、この時点では画面は真っ白で、何も表示されません。<code>_todos</code>に予め適当なインスタンスを追加しておきましょう。</p>
+<pre><code>class _TodoListPageState extends State&lt;TodoListPage&gt; {
+ List&lt;Todo&gt; _todos = [
+   Todo(title: &#34;ほげ&#34;),
+   Todo(title: &#34;ふが&#34;),
+   Todo(title: &#34;ぴよ&#34;),
+ ];</code></pre>
+<p>Hot ReloadまたはHot Restartで表示確認できます。リストのアイテムをクリックするとチェックボックスの表示が切り替わるのも確認しておきましょう。</p>
+<p class="image-container"><img style="width: 602.00px" src="img/974c8e5c8bffce81.png"></p>
+<h2 is-upgraded>TODOを作成するためのダイアログを用意する</h2>
+<p>TODOを追加する際、または編集する際に内容を入力するための画面を用意します。今回はそれをダイアログとして表示することにします。</p>
+<p>入力されたテキストをWidgetの外部に取り出すためには、<code>TextEditingController</code>が必要です。また、<code>TextEditingController</code>は管理しているWidgetの破棄時に一緒に破棄する必要があるため、このWidgetは<code>StatefulWidget</code>として作成します（<code>StatelessWidget</code>にはライフサイクルメソッドがないため、破棄されるタイミングを知ることができない）。</p>
+<p><code>lib/edit_component.dart</code>を作成して、<code>StatefulWidget</code>継承クラスの<code>EditDialog</code>を作成します。</p>
+<pre><code>import &#39;package:flutter/material.dart&#39;;
+
+class EditDialog extends StatefulWidget {
+ @override
+ _EditDialogState createState() =&gt; _EditDialogState();
+}
+
+class _EditDialogState extends State&lt;EditDialog&gt; {
+ @override
+ Widget build(BuildContext context) {
+   return TextField(
+     decoration: InputDecoration(hintText: &#34;TODO&#34;),
+   );
+ }
+}</code></pre>
+<p>テキストの入力を受け付けるWidgetは<a href="https://api.flutter.dev/flutter/material/TextField-class.html" target="_blank"><code>TextField</code></a>です。まずはこれをreturnすることにします。<code>decoration</code>に<a href="https://api.flutter.dev/flutter/material/InputDecoration-class.html" target="_blank"><code>InputDecoration</code></a>を指定することで、見た目のカスタマイズができます。</p>
+<pre><code>class _EditDialogState extends State&lt;EditDialog&gt; {
+ @override
+ Widget build(BuildContext context) {
+   return TextField(
+     decoration: InputDecoration(hintText: &#34;TODO&#34;),
+   );
+ }
+}</code></pre>
+<p>これをダイアログとして表示できるようにします。<a href="https://api.flutter.dev/flutter/material/AlertDialog-class.html" target="_blank"><code>AlertDialog</code></a>が一般的なダイアログの形式を提供してくれるのでこれを使用します。</p>
+<pre><code>class _EditDialogState extends State&lt;EditDialog&gt; {
+ @override
+ Widget build(BuildContext context) {
+   return AlertDialog(
+     content: TextField(
+       decoration: InputDecoration(hintText: &#34;TODO&#34;),
+     ),
+   );
+ }
+}</code></pre>
+<p>これでダイアログとしての形はできましたが、いわゆるモーダルダイアログにはなりません。モーダル表示をするためには<a href="https://api.flutter.dev/flutter/material/showDialog.html" target="_blank"><code>showDialog</code></a>関数を使って表示する必要があります。純粋に<code>showDialog</code>を使うといちいち<code>builder</code>にWidgetの生成関数を書かないといけないので、ダイアログクラスのstaticメソッドとして表示用のメソッドを用意すると便利です。今回は<code>show</code>という名前で表示用メソッドを作成します。</p>
+<pre><code>class EditDialog extends StatefulWidget {
+ static Future&lt;void&gt; show(BuildContext context) {
+   return showDialog(
+     context: context,
+     builder: (context) =&gt; EditDialog(),
+   );
+ }
+
+ @override
+ _EditDialogState createState() =&gt; _EditDialogState();
+}</code></pre>
+<p>表示の準備ができたので表示を試してみましょう。<code>TodoListPage</code>から表示できるようにします。<a href="https://api.flutter.dev/flutter/material/FloatingActionButton-class.html" target="_blank"><code>FloatingActionButton</code></a>を追加して、画面右下にボタンを表示してみます。</p>
+<pre><code>class _TodoListPageState extends State&lt;TodoListPage&gt; {
+ List&lt;Todo&gt; _todos = [
+   Todo(title: &#34;ほげ&#34;),
+   Todo(title: &#34;ふが&#34;),
+   Todo(title: &#34;ぴよ&#34;),
+ ];
+
+ @override
+ Widget build(BuildContext context) {
+   return Scaffold(
+     body: ListView.builder(
+       // 中略
+     ),
+     floatingActionButton: FloatingActionButton(
+       child: Icon(Icons.add),
+       onPressed: () {
+         EditDialog.show(context);
+       },
+     ),
+   );
+ }
+}</code></pre>
+<p class="image-container"><img style="width: 602.00px" src="img/ead66d9639136f9b.png"><img style="width: 601.70px" src="img/9fbac908457fa6aa.png"></p>
+<p>入力値を使ってTODOを追加できるようにしましょう。編集を確定するボタンを用意して、ダイアログが閉じたときに<code>Todo</code>インスタンスを生成するようにしましょう。</p>
+<p>表示用便利メソッドの<code>show</code>メソッドは<code>Future&lt;Todo?&gt;</code>を返すように変更します。また、<code>showDialog</code>の戻り値は<a href="https://api.flutter.dev/flutter/widgets/Navigator/pop.html" target="_blank"><code>Navigator.pop</code></a>の第2引数に渡すことで指定できます。</p>
+<pre><code>class EditDialog extends StatefulWidget {
+ static Future&lt;Todo?&gt; show(BuildContext context) {
+   return showDialog(
+     context: context,
+     builder: (context) =&gt; EditDialog(),
+   );
+ }
+
+ @override
+ _EditDialogState createState() =&gt; _EditDialogState();
+}
+
+class _EditDialogState extends State&lt;EditDialog&gt; {
+ @override
+ Widget build(BuildContext context) {
+   return AlertDialog(
+     content: TextField(
+       decoration: InputDecoration(hintText: &#34;TODO&#34;),
+     ),
+     actions: [
+       ElevatedButton(
+         onPressed: () {
+           Navigator.pop(
+             context,
+             Todo(title: &#34;後でここに入力値を入れます&#34;),
+           );
+         },
+         child: Text(&#34;保存&#34;),
+       ),
+     ],
+   );
+ }
+}</code></pre>
+<aside class="special"><p><code>showDialog</code>で開いたモーダルダイアログを閉じるに<code>Navigator</code>を使用するのが奇妙に思えるかもしれません。</p>
+<p>実は<code>showDialog</code>は<code>Navigator</code>を使って画面遷移を行っているので、前の画面に戻る<code>Navigator.pop</code>を使うことでダイアログを閉じることができます。</p>
+</aside>
+<p class="image-container"><img style="width: 601.70px" src="img/246f1a63b20d9575.png"><img style="width: 601.70px" src="img/601dd4509ed2a77e.png"></p>
+<p>このままだと固定された内容のTODOしか作成できないので、ユーザーの入力値を使えるようにします。<code>_EditDialogState</code>に<code>TextEditingController</code>を保持させ、<code>TextField</code>に渡したり、<code>ElevatedButton</code>が押されたときに値を取り出したりするのに使用できるようにします。また、ライフサイクルに合わせて破棄したりします。</p>
+<pre><code>class _EditDialogState extends State&lt;EditDialog&gt; {
+ late final TextEditingController _textEditingController;
+ @override
+ void initState() {
+   super.initState();
+   _textEditingController = TextEditingController();
+ }
+
+ @override
+ Widget build(BuildContext context) {
+   return AlertDialog(
+     content: TextField(
+       controller: _textEditingController,
+       decoration: InputDecoration(hintText: &#34;TODO&#34;),
+     ),
+     actions: [
+       ElevatedButton(
+         onPressed: () {
+           Navigator.pop(
+             context,
+             Todo(title: _textEditingController.text),
+           );
+         },
+         child: Text(&#34;保存&#34;),
+       ),
+     ],
+   );
+ }
+
+ @override
+ void dispose() {
+   _textEditingController.dispose();
+   super.dispose();
+ }
+}</code></pre>
+<p class="image-container"><img style="width: 601.70px" src="img/810887d577442992.png"></p>
+<h2 is-upgraded>TODOを編集できるようにする</h2>
+<p><code>EditDialog</code>を編集にも使えるようにします。ダイアログを開く際に内容のデフォルト値を渡せるようにしましょう。</p>
+<pre><code>class EditDialog extends StatefulWidget {
+ static Future&lt;Todo?&gt; show(BuildContext context, [Todo? base]) {
+   return showDialog(
+     context: context,
+     builder: (context) =&gt; EditDialog(base: base),
+   );
+ }
+
+ EditDialog({this.base}):super();
+
+ final Todo? base;
+
+ @override
+ _EditDialogState createState() =&gt; _EditDialogState();
+}
+
+class _EditDialogState extends State&lt;EditDialog&gt; {
+ late final TextEditingController _textEditingController;
+ @override
+ void initState() {
+   super.initState();
+   _textEditingController = TextEditingController(text: widget.base?.title);
+ }
+ // 後略</code></pre>
+<p>既存のTODOを長押ししたときに編集ダイアログが出るようにします。<code>_TodoListState</code>で生成している<code>ListTile</code>の<code>onLongPress</code>コールバックから、<code>EditDialog</code>を表示するようにします。</p>
+<pre><code>class _TodoListPageState extends State&lt;TodoListPage&gt; {
+ List&lt;Todo&gt; _todos = [
+   Todo(title: &#34;ほげ&#34;),
+   Todo(title: &#34;ふが&#34;),
+   Todo(title: &#34;ぴよ&#34;),
+ ];
+
+ @override
+ Widget build(BuildContext context) {
+   return Scaffold(
+     body: ListView.builder(
+       itemCount: _todos.length,
+       itemBuilder: (context, index) {
+         final todo = _todos[index];
+
+         return ListTile(
+           title: Text(todo.title),
+           trailing: Checkbox(
+             value: todo.done,
+             onChanged: (checked) {
+               setState(() {
+                 _todos[index] = Todo(title: todo.title, done: checked ?? false);
+               });
+             },
+           ),
+           onLongPress: () async {
+             final result = await EditDialog.show(context, todo);
+             if (result != null) {
+               setState(() {
+                 _todos[index] = result;
+               });
+             }
+           },
+         );
+       },
+     ),
+     floatingActionButton: FloatingActionButton(
+       child: Icon(Icons.add),
+       onPressed: () async {
+         final result = await EditDialog.show(context);
+         if (result != null) {
+           setState(() {
+             _todos.add(result);
+           });
+         }
+       },
+     ),
+   );
+ }
+}</code></pre>
+<p class="image-container"><img style="width: 601.70px" src="img/d71d671d6d54dd5.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/946447306c5fd08d.png"></p>
+<h2 is-upgraded>永続化</h2>
+<p>現在のままでは、アプリを終了すると作成したTODOやその状態は揮発してしまいます。揮発を防ぐには状態の保存（永続化）が必要です。</p>
+<p>Flutterアプリケーションでデータの保存を行う方法はいくつもあります。今回は端末への保存が手軽に行える<a href="https://pub.dev/packages/shared_preferences" target="_blank"><code>shared_preferences</code></a>を使用します。</p>
+<p><code>shared_preferences</code>は、プラットフォームが標準で提供するKVS（iOSならUserDefaults、AndroidならSharedPreferences、WebならWindow.localStorage）にデータを記録するAPIを提供してくれます。</p>
+<p><code>pubspec.yaml</code>の<code>dependencies</code>直下にパッケージ名と使用するバージョンの制約を記入します。</p>
+<pre><code>dependencies:
+ flutter:
+   sdk: flutter
+ shared_preferences: ^2.0.5</code></pre>
+<p><code>flutter pub get</code>コマンドで記入した依存パッケージを取得します。使用しているIDEやエディタの同様のコマンドで取得しても構いません。</p>
+<pre>$ flutter pub get</pre>
+<p>これで<code>shared_preferences</code>の機能が使用可能になります。</p>
+<p>これをState系クラスで直接使用しても良いのですが、TODOの読み込みと保存方法を抽象化しておくと後の改造が楽になるので、それらを司るクラスを作成しておきます。特に<code>shared_preferences</code>は基本的なデータ構造しか保存できないため、TODOのリストを保存しようと思ったらJSON文字列など何かしらの保管可能なデータ構造にシリアライズする必要がありますので、今回はJSON文字列との変換もこのクラスで行うこととします。</p>
+<p><code>lib/repository.dart</code>を作成し、<code>TodoRepository</code>クラスを以下の内容で作成します。</p>
+<pre><code>class TodoRepository {
+ Future&lt;List&lt;Todo&gt;&gt; loadAllTodo() async {
+   final pref = await SharedPreferences.getInstance();
+   final raw = pref.getString(&#34;todos&#34;);
+   if (raw != null) {
+     final decoded = json.decode(raw) as List;
+     return decoded
+         .cast&lt;Map&lt;String, dynamic&gt;&gt;()
+         .map(
+           (e) =&gt; Todo(
+             title: e[&#34;title&#34;],
+             done: e[&#34;done&#34;],
+           ),
+         )
+         .toList();
+   }
+   return [];
+ }
+
+ Future&lt;void&gt; saveAllTodo(List&lt;Todo&gt; todos) async {
+   final pref = await SharedPreferences.getInstance();
+   final values = todos
+       .map((e) =&gt; {
+             &#34;title&#34;: e.title,
+             &#34;done&#34;: e.done,
+           })
+       .toList();
+   final raw = json.encode(values);
+   await pref.setString(&#34;todos&#34;, raw);
+ }
+}
+</code></pre>
+<p><code>TodoRepository</code>からデータを読み出すようにします。</p>
+<pre><code>class _TodoListPageState extends State&lt;TodoListPage&gt; {
+ List&lt;Todo&gt; _todos = [];
+
+ @override
+ void initState() {
+   super.initState();
+   widget.repository.loadAllTodo().then((todos) =&gt; setState(() {
+         _todos = todos;
+       }));
+ }
+
+// 後略</code></pre>
+<p><code>_TodoListPageState</code>の状態変更時に<code>TodoRepository</code>にも現状を保存するようにします。</p>
+<pre><code>class _TodoListPageState extends State&lt;TodoListPage&gt; {
+ List&lt;Todo&gt; _todos = [];
+
+ @override
+ void initState() {
+   // 省略
+ }
+
+ void _replaceTodo(int index, Todo newTodo) {
+   setState(() {
+     _todos[index] = newTodo;
+   });
+   widget.repository.saveAllTodo(_todos);
+ }
+
+ void _appendTodo(Todo newTodo) {
+   setState(() {
+     _todos.add(newTodo);
+   });
+   widget.repository.saveAllTodo(_todos);
+ }
+
+ @override
+ Widget build(BuildContext context) {
+   return Scaffold(
+     body: ListView.builder(
+       itemCount: _todos.length,
+       itemBuilder: (context, index) {
+         final todo = _todos[index];
+
+         return ListTile(
+           title: Text(todo.title),
+           trailing: Checkbox(
+             value: todo.done,
+             onChanged: (checked) {
+               _replaceTodo(
+                 index,
+                 Todo(title: todo.title, done: checked ?? false),
+               );
+             },
+           ),
+           onLongPress: () async {
+             final result = await EditDialog.show(context, todo);
+             if (result != null) {
+               _replaceTodo(index, result);
+             }
+           },
+         );
+       },
+     ),
+     floatingActionButton: FloatingActionButton(
+       child: Icon(Icons.add),
+       onPressed: () async {
+         final result = await EditDialog.show(context);
+         if (result != null) {
+           _appendTodo(result);
+         }
+       },
+     ),
+   );
+ }
+}</code></pre>
+<p>TODOを追加、変更してからアプリを再起動し、結果が保持されていることを確認しましょう。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="状態管理の手法" duration="30">
+        <p>「TODOアプリを作る」の章では<code>StatefulWidget</code>を使った状態管理の手法を紹介しました。</p>
+<h2 is-upgraded>状態管理のデザインパターン</h2>
+<p>一般に以下のパターンが知られています。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>名称</p>
+</td><td colspan="1" rowspan="1"><p>特徴</p>
+</td><td colspan="1" rowspan="1"><p>メリット</p>
+</td><td colspan="1" rowspan="1"><p>デメリット</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>StatefulWidgetパターン</p>
+</td><td colspan="1" rowspan="1"><p>Flutter標準のStatefulWidetを使用した状態管理手法</p>
+</td><td colspan="1" rowspan="1"><ul>
+<li>単純かつ実装が容易</li>
+</ul>
+</td><td colspan="1" rowspan="1"><ul>
+<li>ビジネスロジックと表示のコードが一つのクラスに混じっているので、いわゆるFat Controller問題を招きやすい</li>
+<li>build関数の再実行によって、再ビルドがかかるWidget以下のWidgetツリーをすべて再構成することになり、パフォーマンス的に不利</li>
+</ul>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>BLoCパターン</p>
+<p>（Business Logic of Component）</p>
+</td><td colspan="1" rowspan="1"><ul>
+<li>元はAngular DartプロジェクトとFlutterプロジェクトでのロジックコード共用を目的として考案されたもの</li>
+<li>表示をWidget系のクラスに任せ、ビジネスロジックを別のクラス（BLoCクラス）に分離する</li>
+<li>BLoCクラスの入出力はすべてStreamで統一する</li>
+<li>出力をStreamBuilderでWidgetツリーに反映する</li>
+<li>BLoCインスタンスの管理方法までは規定されていない</li>
+</ul>
+</td><td colspan="1" rowspan="1"><ul>
+<li>BLoCクラスは純Dartプロジェクトとの共用が可能</li>
+<li><a href="http://reactivex.io/" target="_blank">Reactive Extensions</a>の概念に慣れていれば<a href="https://pub.dev/packages/rxdart" target="_blank"><code>rx_dart</code></a>の強力なAPIを使用するなどが可能</li>
+</ul>
+</td><td colspan="1" rowspan="1"><ul>
+<li>入出力をStreamに統一するのが面倒</li>
+<li>StreamBuilderは考慮すべき状態が多く、記述が面倒</li>
+<li>初学者にはReactive Extensionsが難解</li>
+<li>Flutterプロジェクトでしか使わないのなら採用する理由はあまりない</li>
+</ul>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>ScopedModelパターン</p>
+</td><td colspan="1" rowspan="1"><ul>
+<li>表示をWidget系のクラスに任せ、ビジネスロジックを別のクラス（ScopedModelクラス、あるいは単にModelクラス）に分離する</li>
+<li>後述するInheritedWidgetを用いてWidgetツリーに変更を反映する</li>
+<li>ScopedModelインスタンスはInheritedWidgetで管理する</li>
+<li>いわゆるMVVMパターンの変形</li>
+<li>派生形が多い</li>
+</ul>
+</td><td colspan="1" rowspan="1"><ul>
+<li>比較的単純</li>
+<li>ビジネスロジックと表示のコードを明快に分離できる</li>
+<li>インスタンスの管理についていちいち考える必要がない</li>
+</ul>
+</td><td colspan="1" rowspan="1"><ul>
+<li>Flutterプロジェクト外では使用できない</li>
+<li>2021年初旬現在、SocpedModelパターンの元になった<a href="https://pub.dev/packages/scoped_model" target="_blank"><code>scoped_model</code></a>パッケージの知名度が低いためか、この名称が一般的ではない（Providerパターンと呼ぶ人もいる）</li>
+</ul>
+</td></tr>
+</table>
+<p>現在はScopedModelの派生形が使われることが多いようです。</p>
+<h2 is-upgraded>状態管理の実装方法</h2>
+<p>Flutterには<code>StatefulWidget</code>以外にも<code>InheritedWidget</code>を使った状態の変更通知の手段があります。一般に、<code>InheritedWidget</code>を使った手法の方がパフォーマンス的に有利だったり、状態を変更しないインスタンスをWidgetツリー上位から注入するなど依存性注入にも使用できて便利です。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>使用するクラス</p>
+</td><td colspan="1" rowspan="1"><p>メリット</p>
+</td><td colspan="1" rowspan="1"><p>デメリット</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>StatefulWidget + State</p>
+</td><td colspan="1" rowspan="1"><ul>
+<li>単純明快</li>
+</ul>
+</td><td colspan="1" rowspan="1"><ul>
+<li>ビジネスロジックと表示のコードが一つのクラスに混じっているので、いわゆるFat Controller問題を招きやすい</li>
+<li>build関数の再実行によって、再ビルドがかかるWidget以下のWidgetツリーをすべて再構成することになり、パフォーマンス的に不利</li>
+</ul>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>InheritedWidget + Listenable</p>
+</td><td colspan="1" rowspan="1"><ul>
+<li>ビジネスロジックと表示のコードを明快に分離できる</li>
+<li>特定のbuild関数のみを再実行でき、パフォーマンス的に有利</li>
+<li>InheritedWidgetをDIのツールとしても使用可能</li>
+</ul>
+</td><td colspan="1" rowspan="1"><ul>
+<li>Widgetに対応するElementという概念の理解がある程度必要</li>
+<li>注入したいクラスに合わせていちいち新しいクラスを用意しないといけないので準備が面倒</li>
+</ul>
+</td></tr>
+</table>
+<p>が、<code>InheritedWidget</code>をそのまま使用した状態変更通知は面倒なので、これを使いやすくしたサードパーティ製のパッケージがいくつか公開されています。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>パッケージ名</p>
+</td><td colspan="1" rowspan="1"><p>特徴</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><a href="https://pub.dev/packages/provider" target="_blank"><code>provider</code></a></p>
+</td><td colspan="1" rowspan="1"><ul>
+<li>providerで注入したインスタンスならどのクラスでもProvider.of()メソッドで取得可能</li>
+<li>同作者の<a href="https://pub.dev/packages/state_notifier" target="_blank"><code>state_notifier</code></a>と<a href="https://pub.dev/packages/freezed" target="_blank"><code>freezed</code></a>とも組み合わせると、ビジネスロジックのコアロジックと状態表現も明快に分離できる</li>
+</ul>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><a href="https://pub.dev/packages/riverpod" target="_blank"><code>riverpod</code></a></p>
+</td><td colspan="1" rowspan="1"><ul>
+<li>riverpod自体はFlutterに依存しないので純Dartプロジェクトでも使用可能</li>
+<li>（Flutter用の<a href="https://pub.dev/packages/flutter_riverpod" target="_blank"><code>flutter_riverpod</code></a>が内部でInheritedWidgetを使っている）</li>
+<li>providerと同じく<a href="https://pub.dev/packages/state_notifier" target="_blank"><code>state_notifier</code></a>と<a href="https://pub.dev/packages/freezed" target="_blank"><code>freezed</code></a>とも組み合わせるとコアロジックと状態表現を分離しやすい</li>
+<li>providerと同じ作者によるもの（Widgetツリー上部に依存対象が無いまま依存対象を呼び出して起きるエラーを無くすために考案された）</li>
+</ul>
+</td></tr>
+</table>
+<h2 is-upgraded>よく使われる手法</h2>
+<p>Flutter自体が比較的新しいフレームワークであること、宣言的UIフレームワークはビジネスロジックと表示のコードの分離が比較的簡単であることから、あまり手法に命名して開発者間で認識の統一を図ることが積極的には行われていないようです。</p>
+<p>2021年初旬現在、一般的に使われているように思われるのは、<code>provider</code> + <code>state_notifier</code> + <code>freezed</code>もしくは<code>riverpod</code> + <code>state_notifier</code> + <code>freezed</code>のどちらかを使用した、ScopedModelパターン（の変形）です。</p>
+<p>ただ、<code>riverpod</code>はまだメジャーリリースされていないため、実際の開発現場で採用する際はAPIの破壊的変更に注意する必要があります。</p>
+<h2 is-upgraded>TODOアプリをproviderで再構築してみる</h2>
+<p><code>TodoListPage</code>で管理しているTODOのリストと、そのリストに変更を加える操作はビジネスロジックとその状態に当たります。これを<code>state_notifer</code>と<code>freezed</code>で再構成し、<code>provider</code>を使って管理するように再構成してみましょう。</p>
+<p>その過程で前章の<code>TodoListPage</code>を3つのクラスに分割します。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>名称</p>
+</td><td colspan="1" rowspan="1"><p>役割</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>TodoListPage</code></p>
+</td><td colspan="1" rowspan="1"><p><code>TodoListState</code>をUIという形で表示する。今回は状態管理を行わない</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>TodoListState</code></p>
+</td><td colspan="1" rowspan="1"><p>TODO一覧画面の状態を表現する</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><code>TodoListController</code></p>
+</td><td colspan="1" rowspan="1"><p>TODO一覧画面が行うビジネスロジックを表現する。また、<code>TodoListState</code>を保持する</p>
+</td></tr>
+</table>
+<p class="image-container"><img style="width: 601.70px" src="img/cbd7c87f9388d589.png"></p>
+<p>注意しなければならないのは、<code>TodoListState</code> / <code>TodoListController</code>は<code>TodoListPage</code>よりもWidgetツリーの上位に注入しないといけない、ということ。これは、Widgetツリーは上から順に構築されるため、ツリーの下位のWidgetインスタンスを参照できないという制約によるものです。</p>
+<p class="image-container"><img style="width: 601.70px" src="img/a4476e928414b9.png"></p>
+<p>まずは必要な依存関係を追加します。<code>pubspec.yaml</code>に以下のように依存関係を追加して、<code>flutter pub get</code>で依存関係を取得します。</p>
+<pre><code>dependencies:
+ flutter:
+   sdk: flutter
+ shared_preferences: ^2.0.5
+ # 以下4つを追加
+ provider: ^5.0.0
+ state_notifier: ^0.7.0
+ flutter_state_notifier: ^0.7.0
+ freezed_annotation: ^0.14.1
+
+
+dev_dependencies:
+ flutter_test:
+   sdk: flutter
+ # 以下2つを追加
+ build_runner: ^1.12.2
+ freezed: ^0.14.1+1</code></pre>
+<p><code>lib/todo_list_state.dart</code>を作成し、<code>freezed</code>によるビジネスロジックの状態表現クラスを作成します。</p>
+<p><code>freezed</code>はいわゆる値クラスの作成を自動コード生成によって行うツールです（Dart 2.12現在、DartにはJavaのrecordやKotlinのdata class、SwiftのEquatableプロトコル準拠structに相当する値クラスに使用できるデータ構造がないため、それと同じような挙動を実現するにはクラスに比較メソッドなどを自前で実装する必要がある）。</p>
+<p>自動生成されるファイル名の指定のため、<code>part</code>の記述が必須です。ファイル名は、現在のファイル名の拡張子の手前に<code>.freezed</code>を付与したものになります（自動生成系ツールによって変わりますので、ツールのREADMEなどをよく読んでください）。</p>
+<pre><code>import &#39;package:freezed_annotation/freezed_annotation.dart&#39;;
+
+part &#39;todo_list_state.freezed.dart&#39;;
+
+@freezed
+class TodoListState with _$TodoListState {
+ const factory TodoListState({
+   @Default(const []) List&lt;Todo&gt; todos,
+   @Default(true) bool loading,
+ }) = _TodoListState;
+}</code></pre>
+<p>作成したら<code>flutter pub run build_runner build</code>コマンドでコード生成を行います。</p>
+<pre>$ flutter pub run build_runner build
+[INFO] Generating build script...
+[INFO] Generating build script completed, took 392ms
+
+[INFO] Initializing inputs
+[INFO] Reading cached asset graph...
+[INFO] Reading cached asset graph completed, took 51ms
+
+[INFO] Checking for updates since last build...
+[INFO] Checking for updates since last build completed, took 433ms
+
+[INFO] Running build...
+[INFO] 1.5s elapsed, 0/1 actions completed.
+[INFO] Running build completed, took 1.8s
+
+[INFO] Caching finalized dependency graph...
+[INFO] Caching finalized dependency graph completed, took 31ms
+
+[INFO] Succeeded after 1.8s with 1 outputs (1 actions)</pre>
+<p>実行後、<code>lib/todo_list_state.freezed.dart</code>が生成されていることを確認してください。</p>
+<p>次は<code>lib/todo_list_controller.dart</code>を作成し、ビジネスロジックのコアを持つ<code>TodoListController</code>クラスを作成します。</p>
+<pre><code>class TodoListController extends StateNotifier&lt;TodoListState&gt; {
+ final TodoRepository _repository;
+
+ TodoListController({
+   required TodoRepository repository,
+ })   : _repository = repository,
+       super(TodoListState()) {
+   _repository.loadAllTodo().then((todos) {
+     state = state.copyWith(
+       todos: todos,
+       loading: false,
+     );
+   });
+ }
+
+ void replaceTodo(int index, Todo newTodo) {
+   final todos = state.todos;
+   todos[index] = newTodo;
+   state = state.copyWith(todos: todos);
+   _repository.saveAllTodo(todos);
+ }
+
+ void appendTodo(Todo newTodo) {
+   final todos = [...state.todos, newTodo];
+   state = state.copyWith(todos: todos);
+   _repository.saveAllTodo(state.todos);
+ }
+}</code></pre>
+<p><code>TodoListPage</code>より（Widgetツリーの）上位で、<code>TodoListController</code>を注入するようにします。画面Widgetと対になるクラスなので、画面Widgetクラスのstaticメソッドとして注入用のメソッドを用意します。</p>
+<pre><code>class TodoListPage extends StatefulWidget {
+ static Widget create() {
+   return StateNotifierProvider&lt;TodoListController, TodoListState&gt;(
+     create: (context) =&gt; TodoListController(repository: TodoRepository()),
+     child: TodoListPage(),
+   );
+ }
+// 後略</code></pre>
+<aside class="special"><p><code>TodoListPage</code>のコンストラクタをprivateにしておき、注入用メソッドのみを公開するという手もあります。が、自動テスト時にControllerクラスのモックなどを注入して動作確認することもあるため、publicのままにすることもあります。業務などで開発する際はコンストラクタに<a href="https://api.flutter.dev/flutter/meta/visibleForTesting-constant.html" target="_blank"><code>@visibleForTesting</code></a>メタデータを付与しておくとなお良いでしょう。</p>
+<p><code>@visibleForTesting</code></p>
+<p><code>TodoListPage():super();</code></p>
+<p>また、注入の方法に決まった方法はなく、今回紹介するstaticメソッドを使った方法はあくまで一例です。</p>
+</aside>
+<p><code>lib/main.dart</code>の<code>MyApp</code>では今作成したメソッドを使ってTODOの一覧画面を作成するようにします。</p>
+<pre><code>class MyApp extends StatelessWidget {
+ @override
+ Widget build(BuildContext context) {
+   return MaterialApp(
+     title: &#39;Flutter Demo&#39;,
+     theme: ThemeData(
+       primarySwatch: Colors.blue,
+     ),
+     home: TodoListPage.create(),
+   );
+ }
+}</code></pre>
+<p><code>TodoListPage</code>から状態管理のコードをなくし、<code>StetelessWidget</code>に変更します。代わりに注入した<code>TodoListState</code>と<code>TodoListController</code>を使用するようにします。</p>
+<pre><code>class TodoListPage extends StatelessWidget {
+ static Widget create() {
+   return StateNotifierProvider&lt;TodoListController, TodoListState&gt;(
+     create: (context) =&gt; TodoListController(repository: TodoRepository()),
+     child: TodoListPage(),
+   );
+ }
+
+ @visibleForTesting
+ TodoListPage() : super();
+
+ @override
+ Widget build(BuildContext context) {
+   final state = Provider.of&lt;TodoListState&gt;(context);
+   // 代わりにcontext.watch()でもよい。
+   // final state = context.watch&lt;TodoListState&gt;();
+   return Scaffold(
+     body: state.loading
+         ? const Center(
+             child: CircularProgressIndicator(),
+           )
+         : ListView.builder(
+             itemCount: state.todos.length,
+             itemBuilder: (context, index) {
+               final todo = state.todos[index];
+
+               return ListTile(
+                 title: Text(todo.title),
+                 trailing: Checkbox(
+                   value: todo.done,
+                   onChanged: (checked) {
+                     Provider.of&lt;TodoListController&gt;(context, listen: false)
+                         .replaceTodo(
+                       index,
+                       Todo(title: todo.title, done: checked ?? false),
+                     );
+                   },
+                 ),
+                 onLongPress: () async {
+                   final result = await EditDialog.show(context, todo);
+                   if (result != null) {
+                     // Provider.of(context, listen: false)の代わりにcontext.read()でも良い
+                     context
+                         .read&lt;TodoListController&gt;()
+                         .replaceTodo(index, result);
+                   }
+                 },
+               );
+             },
+           ),
+     floatingActionButton: FloatingActionButton(
+       child: Icon(Icons.add),
+       onPressed: () async {
+         final result = await EditDialog.show(context);
+         if (result != null) {
+           context.read&lt;TodoListController&gt;().appendTodo(result);
+         }
+       },
+     ),
+   );
+ }
+}</code></pre>
+<p>実行して、以前と変わりなく動作しているのを確認しましょう。</p>
+<h2 is-upgraded>TODOアプリをriverpodで再構築してみる</h2>
+<p>基本は<code>provider</code>と全く同じです。<code>TodoListState</code>と<code>TodoListController</code>をそのまま流用して、依存性注入の方法として、<code>provider</code>の代わりに<code>riverpod</code>を使用します。</p>
+<p><code>riverpod</code>は<code>Provider</code>と呼ばれる、依存対象を注入するものを指し示すインスタンスをグローバルスコープに保持します（<code>povider</code>の<code>Provider</code>とは全くの別物なので注意）。実際に注入されるインスタンスは<code>ProviderScope</code>というWidgetが保持するため、<code>ProviderScope</code>は<code>Provider</code>が使われるWidgetよりも上位に存在していなければなりません（通常は最上位に置きます）。</p>
+<p><code>pubspec.yaml</code>に依存関係を追加します。（<code>provider</code>と<code>flutter_state_notifier</code>の依存は、今節では使用しないので削除しても構いません）</p>
+<pre><code>dependencies:
+ flutter:
+   sdk: flutter
+ shared_preferences: ^2.0.5
+ provider: ^5.0.0
+ state_notifier: ^0.7.0
+ flutter_state_notifier: ^0.7.0
+ freezed_annotation: ^0.14.1
+ # 以下の2つを追加
+ riverpod: ^0.13.1
+ flutter_riverpod: ^0.13.1+1</code></pre>
+<p><code>TodoListController</code>の<code>Provider</code>を作成します。<code>lib/todo_list_controller.dart</code>のグローバルスコープに以下のコードを追加します。<code>StateNotifierProvider</code>は<code>flutter_state_notifier</code>パッケージではなく、<code>riverpod</code>パッケージのものを使用するようにimportの際は気をつけてください。</p>
+<pre><code>final todoListControllerProvider = StateNotifierProvider(
+ (ref) =&gt; TodoListController(repository: TodoRepository()),
+);</code></pre>
+<p>作成した<code>todoListControllerProvider</code>を<code>TodoListPage</code>から使用できるようにします。<code>TodoListPage</code>が<code>ConsumerWidget</code>を継承するように変更し、提供される<code>watch</code>関数を使って<code>todoListControllerProvider</code>が提供する<code>TodoListState</code>や<code>TodoListController</code>を使用します。</p>
+<pre><code>class TodoListPage extends ConsumerWidget {
+ @override
+ Widget build(BuildContext context, ScopedReader watch) {
+   final state = watch(todoListControllerProvider.state);
+   return Scaffold(
+     body: state.loading
+         ? const Center(
+             child: CircularProgressIndicator(),
+           )
+         : ListView.builder(
+             itemCount: state.todos.length,
+             itemBuilder: (context, index) {
+               final todo = state.todos[index];
+
+               return ListTile(
+                 title: Text(todo.title),
+                 trailing: Checkbox(
+                   value: todo.done,
+                   onChanged: (checked) {
+                     watch(todoListControllerProvider).replaceTodo(
+                       index,
+                       Todo(title: todo.title, done: checked ?? false),
+                     );
+                   },
+                 ),
+                 onLongPress: () async {
+                   final result = await EditDialog.show(context, todo);
+                   if (result != null) {
+                     watch(todoListControllerProvider)
+                         .replaceTodo(index, result);
+                   }
+                 },
+               );
+             },
+           ),
+     floatingActionButton: FloatingActionButton(
+       child: Icon(Icons.add),
+       onPressed: () async {
+         final result = await EditDialog.show(context);
+         if (result != null) {
+           watch(todoListControllerProvider).appendTodo(result);
+         }
+       },
+     ),
+   );
+ }
+}</code></pre>
+<p><code>lib/main.dart</code>の<code>runApp</code>直下に<code>ProviderScope</code>を配置して、<code>Provider</code>に対応するインスタンスを保持できるようにします。</p>
+<pre><code>void main() {
+ runApp(ProviderScope(
+   child: MyApp(),
+ ));
+}</code></pre>
+<p>以前と変わりなく動作していることを確認してください。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="もっとレベルを上げるために（追加のお題）" duration="5">
+        <p>前章までに、ローカル環境で動作するTODOアプリを作成しました。基本的なWidgetの使い方や状態管理方法を理解していただけたと思います。</p>
+<p>今までの知識をベースに応用的なアプリケーションの作成も可能です。ご自身でWidgetを調査する、ロジックを考えるなどしてみてください。以下にレベルアップにちょうど良さそうな題材を用意しておきます。参考にしてください。</p>
+<h2 is-upgraded>初級</h2>
+<p>現在のアプリの構成のまま実装が可能と思われる範囲</p>
+<ul>
+<li>タイトルバー（AppBar）を表示する</li>
+<li>TODOを完了状態にしたときにTODOの表示が消えるようにする</li>
+<li>TODOのタイトルが必ず入力された状態でないと「保存」ボタンを押せないようにする</li>
+<li>未完了のTODOと完了しているTODOの表示を切り替える</li>
+<li>TODOの削除を可能にする</li>
+<li>TODOを並び替える。並び替えた順序も永続化される</li>
+</ul>
+<h2 is-upgraded>中級</h2>
+<p>現在のアプリから少々構成を変更する必要が出てくる範囲</p>
+<ul>
+<li>複数端末でも同じTODOリストを閲覧、編集できるようにする</li>
+<li>TODOをさらに複数の子TODOに分割できるようにする</li>
+<li>TODOにコメントをつけられるようにする</li>
+<li>TODOの実行期限を記入できるようにする</li>
+<li>TODOをカテゴリに分類できるようにする</li>
+</ul>
+<h2 is-upgraded>上級</h2>
+<p>現在のアプリからかなり構成を変更する必要が出てくる範囲</p>
+<ul>
+<li>複数人で同時編集できるようにする。誰が追加したのか、変更したのかもわかる</li>
+<li>TODOの実行期限が来てしまったらPush通知でお知らせする</li>
+<li>TODOに写真を添付できるようにする</li>
+<li>TODOに音声メモを添付できるようにする</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
