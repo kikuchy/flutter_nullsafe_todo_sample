@@ -3,13 +3,13 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2021-03-30T03:26:16Z",
+  "updated": "2021-03-30T03:44:35Z",
   "id": "flutter-2-todo",
   "duration": 115,
   "title": "FlutterでTODOアプリ",
   "authors": "kikuchy",
   "summary": "Flutter 2.0.xを使ったTODOアプリ作成までのハンズオン資料です",
-  "source": "1mtE7DZ9JzfefQrAEgJLzCifpBlga6Uw11WpBPpr9_Co",
+  "source": "",
   "theme": "flutter",
   "status": [
     "draft"
@@ -18,6 +18,6 @@
     "Flutter"
   ],
   "tags": [],
-  "feedback": "https://github.com/budougumi0617/claat-sample/issues",
+  "feedback": "https://github.com/kikuchy/flutter_nullsafe_todo_sample/issues/new",
   "url": "flutter-2-todo"
 }
