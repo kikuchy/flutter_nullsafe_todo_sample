@@ -79,6 +79,48 @@
 
       </google-codelab-step>
     
+      <google-codelab-step label="Dart言語をもう少し詳しく" duration="50">
+        <p>他のプログラミング言語を学習したことがあり、手続き型オブジェクト指向プログラミングに理解があることを前提としています。</p>
+<h2 is-upgraded>基本文法</h2>
+<p><a href="https://dart.dev/guides/language/language-tour" target="_blank">Dart Language Tutor</a>にほぼすべて書かれています。長いので、とりあえず以下の項目を呼んで雰囲気だけでも掴んでください。</p>
+<ul>
+<li><a href="https://dart.dev/guides/language/language-tour#a-basic-dart-program" target="_blank">A basic Dart program</a></li>
+<li><a href="https://dart.dev/guides/language/language-tour#important-concepts" target="_blank">Important concepts</a></li>
+<li><a href="https://dart.dev/guides/language/language-tour#variables" target="_blank">Variables</a></li>
+<li><a href="https://dart.dev/guides/language/language-tour#built-in-types" target="_blank">Built-in types</a></li>
+<li><a href="https://dart.dev/guides/language/language-tour#functions" target="_blank">Functions</a></li>
+<li><a href="https://dart.dev/guides/language/language-tour#classes" target="_blank">Classes</a></li>
+<li><a href="https://dart.dev/guides/language/language-tour#asynchrony-support" target="_blank">Asynchrony support</a></li>
+<li><a href="https://dart.dev/guides/language/language-tour#comments" target="_blank">Comments</a></li>
+</ul>
+<p>その他の項目も理解しておくと役に立ちます。読んでみてください。</p>
+<p>※<a href="https://qiita.com/yana1316/items/dff227fde4cc76b1b9ab" target="_blank">有志が作成したDartのNull Safety対応前の記事の日本語訳</a>などもあります。英語が読めない場合に活用しても良いかもしれません。ただし内容が古いので最新かつ公式のドキュメントを読めるようになることを強くおすすめします。</p>
+<h2 is-upgraded>エコシステム</h2>
+<p>Node.jsにおけるnpm Registory、JavaにおけるMaven Centralのように、Dartのパッケージ管理システムpubが使用する公開パッケージリポジトリがあります。</p>
+<ul>
+<li><a href="https://pub.dev/" target="_blank">pub.dev</a></li>
+</ul>
+<p>後述するpubspec.yamlファイルに記述したパッケージの依存関係解決には、デフォルトで上記のpub.devが使用されます。</p>
+<p>パッケージソースを明示した場合は、上記以外のパッケージリポジトリや任意のGitリポジトリからパッケージを取得することが可能です。</p>
+<h2 is-upgraded>コードスタイル</h2>
+<p>言語ごとに、コミュニティや会社が定めたコーディングスタイルガイドがあることがあります。そうしたスタイルガイドに則ったコードを書くことで、他の人にも読みやすく理解しやすいコードになります。</p>
+<p>Dartは公式がスタイルガイドを公開しているため、これがデファクトスタンダードとなっています。</p>
+<ul>
+<li><a href="https://dart.dev/guides/language/effective-dart/style" target="_blank">Effective Dart: Style</a></li>
+</ul>
+<p>また、こうしたスタイルガイドに則ったコードになっているか確認するために、Dartの静的解析ツールが使用できます。</p>
+<ul>
+<li><a href="https://dart.dev/guides/language/analysis-options" target="_blank">Customizing static analyzer</a></li>
+</ul>
+<p>予め厳し目のルールをプリセットにしたパッケージもあります。</p>
+<ul>
+<li><a href="https://pub.dev/packages/pedantic" target="_blank">pedantic</a></li>
+<li><a href="https://pub.dev/packages/pedantic_mono" target="_blank">pedantic_mono</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
       <google-codelab-step label="Flutterアプリケーション開発事始め" duration="5">
         <p>今回は詳しく説明しません。事前にSDKのインストールからアプリが実行可能であることまでは確認済みであることを期待します。</p>
 <h2 is-upgraded>SDKのインストール</h2>
@@ -170,7 +212,7 @@ $ flutter run</pre>
 
       </google-codelab-step>
     
-      <google-codelab-step label="Flutterアプリプロジェクトの基本構成" duration="10">
+      <google-codelab-step label="Flutterアプリプロジェクトの基本構成" duration="20">
         <p>本章では最初に生成されるプロジェクトをもとに、Flutterアプリの基本的な構成を解説します。</p>
 <p class="image-container"><img style="width: 438.00px" src="img/d6f19268222cbfc.png"></p>
 <h2 is-upgraded>ソースコード（libディレクトリ）</h2>
@@ -189,7 +231,7 @@ $ flutter run</pre>
 <tr><td colspan="1" rowspan="1"><p><code>description</code></p>
 </td><td colspan="1" rowspan="1"><p>アプリの説明<br>Flutterプロジェクトの場合は特にアプリに反映されない</p>
 </td></tr>
-<tr><td colspan="1" rowspan="1"><p><code>publich_to</code></p>
+<tr><td colspan="1" rowspan="1"><p><code>publish_to</code></p>
 </td><td colspan="1" rowspan="1"><p>Dartパッケージのリポジトリ pub.dev に公開するかどうかの設定</p>
 <p>Flutterプロジェクトは基本的に公開しないため none にしておく</p>
 </td></tr>
@@ -242,6 +284,14 @@ class MyApp extends StatelessWidget {
 </code></pre>
 <p>runAppに指定されたWidgetを根とした木構造になっている（Widgetのツリーが存在している）ことを理解しておくと、後の理解が深まります。</p>
 <p class="image-container"><img style="width: 392.03px" src="img/9a591b83dc05c160.png"></p>
+<h3 is-upgraded>Widgetとは</h3>
+<p>ReactやSwiftUIで言うところのComponent、JavaScript界隈で言われるところの仮想DOMです。</p>
+<p>ReactやSwiftUIをご存じない方は、「画面上に表示される要素が、どのように構成されているか」という構成情報を表現するオブジェクトだと思ってください。</p>
+<p>例えばText Widgetは引数に与えられた文字列を画面に表示します。</p>
+<p>Center Widgetは、子Widgetを中央に配置します。</p>
+<p>MaterialApp Widgetは、子Widgetからなるアプリケーションを表現します。</p>
+<p>Flutterにおいては、画面に表示される具体的要素も、アニメーションも、アプリ自体もWidgetです。</p>
+<p>Flutterも仕組みとしては仮想DOMの概念を用いたUIフレームワーク（ReactやVue.jsなど）と同様に、裏で画面に表示する実体となるオブジェクトを管理しています。が、今回の資料ではそうしたものは扱いません。</p>
 <p>Widgetは状態を持つことができ、またその状態によって表示を変えることもできます。</p>
 <pre><code>// 状態を持つWidgetはStatefulWidgetとStateの2つのクラスで構成します
 class MyHomePage extends StatefulWidget {
@@ -310,7 +360,7 @@ class _MyHomePageState extends State&lt;MyHomePage&gt; {
 
       </google-codelab-step>
     
-      <google-codelab-step label="TODOアプリを作る" duration="60">
+      <google-codelab-step label="TODOアプリを作る" duration="90">
         <p>TODOアプリを作ってみることで、基本的なFlutterアプリケーションの作り方を掴んでみてください。</p>
 <h2 is-upgraded>要件</h2>
 <p>以下の要件を満たすアプリを目指します。</p>
@@ -490,7 +540,7 @@ class _EditDialogState extends State&lt;EditDialog&gt; {
 }</code></pre>
 <p class="image-container"><img style="width: 602.00px" src="img/ead66d9639136f9b.png"><img style="width: 601.70px" src="img/9fbac908457fa6aa.png"></p>
 <p>入力値を使ってTODOを追加できるようにしましょう。編集を確定するボタンを用意して、ダイアログが閉じたときに<code>Todo</code>インスタンスを生成するようにしましょう。</p>
-<p>表示用便利メソッドの<code>show</code>メソッドは<code>Future&lt;Todo?&gt;</code>を返すように変更します。また、<code>showDialog</code>の戻り値は<a href="https://api.flutter.dev/flutter/widgets/Navigator/pop.html" target="_blank"><code>Navigator.pop</code></a>の第2引数に渡すことで指定できます。</p>
+<p>表示用便利メソッドの<code>show</code>メソッドは<code>Future<Todo?></code>を返すように変更します。また、<code>showDialog</code>の戻り値は<a href="https://api.flutter.dev/flutter/widgets/Navigator/pop.html" target="_blank"><code>Navigator.pop</code></a>の第2引数に渡すことで指定できます。</p>
 <pre><code>class EditDialog extends StatefulWidget {
  static Future&lt;Todo?&gt; show(BuildContext context) {
    return showDialog(
